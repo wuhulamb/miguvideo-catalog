@@ -1,2 +1,65 @@
-# miguvideo-catalog
-A Python scraper that collects structured catalog data from Migu Video. 
+# 咪咕视频数据爬取工具
+
+这是一个用于爬取咪咕视频网站影视列表数据的 Python 脚本
+
+## 功能特性
+
+- 🎬 支持多种视频类型（电影、电视剧、综艺、纪实、体育、动漫、少儿）
+- 📅 按年份范围爬取数据（默认从1900年到当前年份）
+- 🔄 自动去重和合并数据
+- 📊 数据保存为CSV格式
+- ⚡ 请求失败自动重试机制
+- 🗂️ 分类数据分别存储
+
+## 文件结构
+
+```
+.
+├── main.py          # 主程序
+├── catalog.json     # 分类配置文件
+└── data/            # 数据输出目录
+```
+
+## 环境要求
+
+- Python 3.6+
+- 依赖库：`requests`
+
+## 安装依赖
+
+```bash
+pip install requests
+```
+
+## 配置文件（必须）
+
+项目需要 `catalog.json` 文件来定义要爬取的视频类别
+
+## 使用方法
+
+```bash
+python main.py
+```
+
+## 输出文件
+
+爬取的数据将保存在 `data/` 目录下，每个类别一个CSV文件，包含以下字段：
+- contDisplayName: 类别
+- year: 年份
+- pID: 内容ID
+- name: 名称
+- score: 评分
+- contentStyle: 内容类型
+
+## 配置参数
+
+在 `main.py` 中的参数：
+- `BASE_URL`: API基础地址
+- `PAGE_SIZE`: 每页数据量（默认50）
+- `MAX_RESULTS`: 最大结果数量限制（默认1500）
+- `START_YEAR`: 起始年份（默认1900）
+- `MAX_RETRIES`: 最大重试次数（默认3）
+
+说明：
+1. 咪咕视频接口的 `PAGE_SIZE` 最大为50
+2. 经过测试咪咕视频返回列表数据条数超过1500时会有截断，所以 `MAX_RESULTS` 设的是1500，如果打印输出某个数据的爬取超过了1500，则该数据爬取不全。不过程序已经按照类别和年份进行爬取，最多的数据条数也不超过1000条，因此不必太担心
